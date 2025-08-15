@@ -1,0 +1,64 @@
+import pandas as pd
+from datetime import datetime
+import os
+
+# Step 1: Load the Excel file
+input_path = r"C:\Users\91984\Downloads\marriage_data.xlsx"  # Change this path
+df = pd.read_excel(input_path)
+print("\nSTEP 1: Original Data")
+print(df.head())
+
+# Step 2: Remove unwanted spaces from column names
+df.columns = df.columns.str.strip()
+print("\nSTEP 2: Column names cleaned")
+print(df.columns.tolist())
+
+# Step 3: Remove extra spaces in each cell
+df = df.map(lambda x: x.strip() if isinstance(x, str) else x)
+print("\nSTEP 3: Removed extra spaces from cells")
+print(df.head())
+
+# Step 4: Standardize text formatting
+df["Groom Name"] = df["Groom Name"].str.title()
+df["Bride Name"] = df["Bride Name"].str.title()
+df["City"] = df["City"].str.title()
+df["Marital Status"] = df["Marital Status"].str.capitalize()
+df["Groom Occupation"] = df["Groom Occupation"].str.title()
+df["Bride Occupation"] = df["Bride Occupation"].str.title()
+print("\nSTEP 4: Standardized text formatting")
+print(df.head())
+
+# Step 5: Convert Marriage Date to datetime and drop future dates
+df["Marriage Date"] = pd.to_datetime(df["Marriage Date"], errors="coerce")
+today = datetime.today()
+df = df[df["Marriage Date"] <= today]
+print("\nSTEP 5: Converted Marriage Date and removed future dates")
+print(df.head())
+
+# Step 6: Keep only realistic ages
+before_age = len(df)
+df = df[(df["Groom Age"] >= 18) & (df["Groom Age"] <= 90)]
+df = df[(df["Bride Age"] >= 18) & (df["Bride Age"] <= 90)]
+after_age = len(df)
+print(f"\nSTEP 6: Removed {before_age - after_age} rows with unrealistic ages")
+print(df.head())
+
+# Step 7: Remove duplicates
+before_dupes = len(df)
+df = df.drop_duplicates()
+after_dupes = len(df)
+print(f"\nSTEP 7: Removed {before_dupes - after_dupes} duplicate rows")
+print(df.head())
+
+# Step 8: Fill missing City values
+missing_before = df["City"].isna().sum()
+df["City"] = df["City"].fillna("Unknown")
+print(f"\nSTEP 8: Filled {missing_before} missing 'City' values with 'Unknown'")
+print(df.head())
+
+# Step 9: Save cleaned file in the same folder
+folder = os.path.dirname(input_path)
+cleaned_path = os.path.join(folder, "marriage_data_cleaned.xlsx")
+df.to_excel(cleaned_path, index=False)
+
+print(f"\n✅ Data cleanup completed. Cleaned file saved at: {cleaned_path}")
