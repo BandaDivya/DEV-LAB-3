@@ -1,0 +1,54 @@
+import pandas as pd
+import re
+
+# 1. Load data
+print("Loading data...")
+child_df = pd.read_csv(r"C:\Users\91984\Downloads\ChildLabourinIndia.csv")
+marriage_df = pd.read_excel(r"C:\Users\91984\Downloads\marriage_data.xlsx")
+print("\nChild Labour Data (first 5 rows):")
+print(child_df.head())
+print("\nMarriage Data (first 5 rows):")
+print(marriage_df.head())
+
+# 2. Clean column names
+print("\nSTEP 2: Cleaning column names...")
+print("Before:", child_df.columns.tolist())
+child_df.columns = [re.sub(r'\s+', '_', c.strip().lower()) for c in child_df.columns]
+marriage_df.columns = [re.sub(r'\s+', '_', c.strip().lower()) for c in marriage_df.columns]
+print("After (Child):", child_df.columns.tolist())
+print("After (Marriage):", marriage_df.columns.tolist())
+
+# 3. Remove extra spaces
+print("\nSTEP 3: Trimming spaces from text values...")
+print("Before (Child sample):")
+print(child_df.head())
+child_df = child_df.map(lambda x: x.strip() if isinstance(x, str) else x)
+marriage_df = marriage_df.map(lambda x: x.strip() if isinstance(x, str) else x)
+print("After (Child sample):")
+print(child_df.head())
+
+# 4. Fill missing values
+print("\nSTEP 4: Filling missing values...")
+print("Before (missing counts Child):")
+print(child_df.isnull().sum())
+child_df = child_df.fillna("Unknown")
+marriage_df = marriage_df.fillna("Unknown")
+print("After (missing counts Child):")
+print(child_df.isnull().sum())
+
+# 5. Remove duplicates
+print("\nSTEP 5: Removing duplicates...")
+print("Before - Child rows:", len(child_df))
+print("Before - Marriage rows:", len(marriage_df))
+child_df = child_df.drop_duplicates()
+marriage_df = marriage_df.drop_duplicates()
+print("After - Child rows:", len(child_df))
+print("After - Marriage rows:", len(marriage_df))
+
+# 6. Save cleaned files
+print("\nSTEP 6: Saving cleaned files...")
+child_df.to_excel(r"C:\Users\91984\Downloads\child_labour_cleaned.xlsx", index=False)
+marriage_df.to_excel(r"C:\Users\91984\Downloads\marriage_data_cleaned.xlsx", index=False)
+print("Files saved successfully!")
+
+print("\n--- CLEANUP DONE ---")
