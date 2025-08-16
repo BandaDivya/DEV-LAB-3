@@ -1,0 +1,36 @@
+VIVA QUESTIONS
+
+1) What do you mean by data type casting in the context of data analysis and data cleaning?
+Data type casting means changing the data from one type to another (like text to numbers or numbers to dates).
+In data cleaning, it helps make sure values are in the correct format so they can be analyzed and visualized properly.
+
+
+
+
+2) When is it appropriate to drop missing values in data rather than imputing them in the context of data cleaning with pandas?
+It’s better to drop missing values when they are very few and don’t affect the overall dataset, or when the missing data doesn’t carry important information.
+If too many values are missing or the column is important, then imputing is a better choice.
+["Impute" means filling in the missing values with some estimated value, like the mean, median, mode, or a predicted value, instead of leaving them blank or dropping them.]
+
+
+
+
+3) What is pandas in python?
+Pandas is a Python library that helps you store and work with data in tables (like Excel).
+In Data Exploration and Visualization labs, it is used to clean, analyze, and prepare data for creating graphs and insights.
+
+
+
+
+4) What are the steps involved in data transformation?
+In Data Exploration and Visualization lab, data transformation involves:
+Cleaning & Formatting – fixing missing values, removing errors, and converting data into a proper format.
+Reshaping & Scaling – changing structure (like columns to rows), normalizing values, or creating new features for better analysis and visualization.
+
+
+
+
+5) Can you explain why data cleansing is important?
+Data cleansing is important because it removes errors, duplicates, and missing values, making the data accurate.
+Clean data helps in better exploration and visualization, so the results are reliable and easy to understand.
+
